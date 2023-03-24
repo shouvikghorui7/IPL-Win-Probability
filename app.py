@@ -1,6 +1,5 @@
 import streamlit as st
 import pickle
-import math
 import pandas as pd
 teams = ['Sunrisers Hyderabad',
  'Mumbai Indians',
@@ -37,10 +36,12 @@ if st.button('Predict Probability'):
     runs_left = target - score
     balls_left = 120 -(overs*6)
     wickets = 10 - wickets
-    over_frac = math.modf(overs)
-    overs=6*over_frac[1]+over_frac[0]
-    crr = (score/overs)*6
-    rrr=(runs_left*6)/balls_left
+    #over_frac = math.modf(overs)
+    #overs=6*over_frac[1]+over_frac[0]
+    crr = score/overs
+    rrr = (runs_left*6)/balls_left
+    #crr = (score/overs)*6
+    #rrr=(runs_left*6)/balls_left
     input_df= pd.DataFrame({'batting_team':[batting_team],'bowling_team':[bowling_team],'city':[selected_city],'runs_left':[runs_left],'balls_left':[balls_left],'wickets':[wickets],'total_runs_x':[target],'crr':[crr],'rrr':[rrr]})
     result = pipe.predict_proba(input_df)
     loss = result[0][0]
